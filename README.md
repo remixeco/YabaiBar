@@ -26,6 +26,9 @@ brew tap remixeco/tap
 brew install --cask remixeco/tap/yabaibar
 ```
 
+> Homebrew asks you to trust a tap before installing from it. Answer `y` at the
+> prompt, or run `brew trust remixeco/tap` once.
+
 Building from source:
 
 ```sh
