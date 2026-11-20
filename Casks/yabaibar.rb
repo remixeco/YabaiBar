@@ -1,6 +1,6 @@
 cask "yabaibar" do
   version "1.0.0"
-  sha256 "46e86da3645bbd1286cb2947ce41346b0557e0001679ea8184fbeba9b6b488b5"
+  sha256 "2f08b5b3205ea522cf12fa9d787bff8c27157a84ec0de6176549a3ade6702ac8"
 
   url "https://github.com/remixeco/YabaiBar/releases/download/v#{version}/YabaiBar-#{version}.zip",
       verified: "github.com/remixeco/YabaiBar/"
