@@ -1,0 +1,28 @@
+--- /tmp/yabai.wiki/_Sidebar.md	2026-11-20 13:09:01
++++ _Sidebar.md	2026-11-20 13:24:18
+@@ -9,6 +9,7 @@
+ - [Installation requirements](https://github.com/asmvik/yabai/wiki#installation-requirements)
+ - [Quickstart guide](https://github.com/asmvik/yabai/wiki#quickstart-guide)
+ - [Comparison with other window managers](https://github.com/asmvik/yabai/wiki#comparison-with-other-window-managers)
++- [Graphical interfaces](https://github.com/asmvik/yabai/wiki/Graphical-interfaces)
+ 
+ </details>
+ 
+--- /tmp/yabai.wiki/Home.md	2026-11-20 13:09:01
++++ Home.md	2026-11-20 13:24:18
+@@ -50,7 +50,7 @@
+ 1. Optional: Partially disable System Integrity Protection (required for many advanced features)
+ 2. Install yabai and configure macOS to allow it to run
+ 3. Configure yabai to your liking
+-4. Optional: Integrate yabai with other software like [&nearr;&nbsp;skhd][gh-skhd] for keyboard shortcuts or [&nearr;&nbsp;Übersicht][gh-uebersicht] for desktop widgets
++4. Optional: Integrate yabai with other software like [&nearr;&nbsp;skhd][gh-skhd] for keyboard shortcuts, [&nearr;&nbsp;Übersicht][gh-uebersicht] for desktop widgets, or a [&nearr;&nbsp;graphical front end][gh-gui]
+ 
+ You can find detailed instructions on every step of the quickstart guide in this wiki. The sidebar to the right (bottom for mobile devices) has a sorted list of pages with links to individual chapters. 
+ 
+@@ -84,4 +84,5 @@
+ 
+ [gh-skhd]: https://github.com/asmvik/skhd
+ [gh-uebersicht]: https://github.com/felixhageloh/uebersicht
++[gh-gui]: https://github.com/asmvik/yabai/wiki/Graphical-interfaces
+ [gh-amethyst]: https://github.com/ianyh/Amethyst
+\ No newline at end of file
