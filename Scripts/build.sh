@@ -90,8 +90,24 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
-step "Signing (ad-hoc)"
-codesign --force --sign - --timestamp=none "$APP_BUNDLE"
+step "Signing"
+# A "Developer ID Application" identity is used when one is available: it is
+# what Apple notarization requires, and what the Homebrew cask audit checks.
+# Without it the bundle is signed ad-hoc, which is enough to run locally.
+SIGN_IDENTITY="${SIGN_IDENTITY:-}"
+if [ -z "$SIGN_IDENTITY" ]; then
+  SIGN_IDENTITY="$(security find-identity -v -p codesigning 2>/dev/null \
+    | grep 'Developer ID Application' | head -1 | sed -E 's/.*"(.+)".*/\1/')"
+fi
+
+if [ -n "$SIGN_IDENTITY" ]; then
+  echo "  identity: $SIGN_IDENTITY"
+  codesign --force --options runtime --timestamp --sign "$SIGN_IDENTITY" "$APP_BUNDLE"
+else
+  echo "  no Developer ID identity found, signing ad-hoc"
+  echo "  (set SIGN_IDENTITY, or join the Apple Developer Program, to ship a notarized build)"
+  codesign --force --sign - --timestamp=none "$APP_BUNDLE"
+fi
 codesign --verify --verbose=2 "$APP_BUNDLE"
 
 if [ "$DO_INSTALL" -eq 1 ]; then

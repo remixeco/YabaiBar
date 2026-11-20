@@ -16,18 +16,16 @@ blue while something is happening.
 ## Install
 
 ```sh
-brew install --cask yabaibar
-```
-
-Or from a tap, if the cask has not reached homebrew/cask yet:
-
-```sh
 brew tap remixeco/tap
 brew install --cask remixeco/tap/yabaibar
 ```
 
 > Homebrew asks you to trust a tap before installing from it. Answer `y` at the
 > prompt, or run `brew trust remixeco/tap` once.
+
+The cask is also being submitted to `homebrew/cask`, so that
+`brew install --cask yabaibar` works without a tap. Until it is merged, the tap
+above is the way to install it.
 
 Building from source:
 
@@ -118,6 +116,7 @@ button that opens the right settings pane.
 swift build -c release          # compile
 ./Scripts/build.sh              # build, sign and install
 ./Scripts/build.sh --no-install # build only
+./Scripts/package.sh            # build and package a release archive
 ./Scripts/screenshots.sh        # regenerate the images in docs/
 ```
 
@@ -127,6 +126,25 @@ every size and keeps binaries out of the repository.
 
 The screenshots are rendered by the app itself
 (`YabaiBar --screenshots docs`), so they always match the code.
+
+### Signing and notarization
+
+`Scripts/build.sh` signs the bundle with a "Developer ID Application"
+certificate when one is present in the keychain, and falls back to an ad-hoc
+signature otherwise. Apple only notarizes Developer ID builds, so a
+notarized release needs the paid Apple Developer Program.
+
+`Scripts/notarize.sh` does the whole chain — sign, submit to Apple's notary
+service, staple the ticket, repackage and refresh the cask checksum:
+
+```sh
+xcrun notarytool store-credentials "AC_NOTARY" \
+  --apple-id "you@example.com" \
+  --team-id "XXXXXXXXXX" \
+  --password "app-specific-password"
+
+./Scripts/notarize.sh
+```
 
 `Scripts/click.swift` and `Scripts/find_icon.swift` are small helpers used to
 drive and inspect the menu bar item while debugging; they are handy if you
