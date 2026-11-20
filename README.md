@@ -125,6 +125,10 @@ every size and keeps binaries out of the repository.
 The screenshots are rendered by the app itself
 (`YabaiBar --screenshots docs`), so they always match the code.
 
+`Scripts/click.swift` and `Scripts/find_icon.swift` are small helpers used to
+drive and inspect the menu bar item while debugging; they are handy if you
+change how the status item is drawn.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
