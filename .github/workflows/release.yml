@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+
+      - name: Build and package
+        run: ./Scripts/package.sh
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            "dist/YabaiBar-$(cat VERSION).zip" \
+            --title "YabaiBar $(cat VERSION)" \
+            --generate-notes
+
+  cask:
+    # Fails the workflow when the cask checksum no longer matches the
+    # published artifact, which is exactly what homebrew/cask would reject.
+    runs-on: macos-14
+    needs: release
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify the cask checksum
+        run: |
+          VERSION="$(cat VERSION)"
+          curl -sL -o "/tmp/YabaiBar.zip" \
+            "https://github.com/remixeco/YabaiBar/releases/download/v${VERSION}/YabaiBar-${VERSION}.zip"
+          EXPECTED="$(grep -m1 'sha256' Casks/yabaibar.rb | sed -E 's/.*sha256 "([^"]+)".*/\1/')"
+          ACTUAL="$(shasum -a 256 /tmp/YabaiBar.zip | awk '{print $1}')"
+          if [ "$EXPECTED" != "$ACTUAL" ]; then
+            echo "checksum mismatch: $EXPECTED != $ACTUAL"
+            exit 1
+          fi
+          echo "checksum ok: $ACTUAL"
